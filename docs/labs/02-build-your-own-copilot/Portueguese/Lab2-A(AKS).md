@@ -10,7 +10,7 @@ Você será capaz de completar as seguintes tarefas:
 - Tarefa 1: Implantar os Serviços no AKS.
 - Tarefa 2: Criar uma Imagem Docker para a UI do Miyagi.
 - Tarefa 3: Criar Imagens Docker para o serviço de Recomendação.
-- Tarefa 4: Enviar a Imagem Docker do serviço de Recomendação para o Registro de Contêiner.
+- Tarefa 4: Enviar a Imagem Docker do serviço de Recomendação para o Azure Container Registry(ACR).
 - Tarefa 5: Implantar os Pods no AKS.
 
 ### Tarefa 1: Implantar os Serviços no AKS
@@ -173,47 +173,47 @@ Nesta tarefa, você construirá e executará o contêiner Docker da UI do Miyagi
 
    ![](../Media/miyagi-image46.png)
 
-### Tarefa 4: enviar o serviço Docker Image of Recommendation para o Container Registry
+### Tarefa 4: Enviar a Imagem Docker do serviço de Recomendação para o Azure Container Registry(ACR)
 
-Nesta tarefa, irá enviar imagens de recomendação miyagi para acr.
+Nesta tarefa, você enviará a imagem Docker do serviço de recomendação do Miyagi para o Azure Container Registry (ACR). Isso envolve fazer login no portal do Azure, atribuir uma tag à imagem Docker com o nome do ACR e, em seguida, enviar a imagem para o ACR.
 
-1. Navegue de volta para a janela **Visual Studio Code** e navegue até **miyagi/services/recommendation-service/dotnet** - clique com o botão direito do rato em dotnet no menu em cascata, seleccione **Abrir no terminal integrado**.
+1. Navegue de volta para o **Visual Studio Code**, vá para a pasta **miyagi** e expanda **services (1)/recommendation-service (2)/dotnet (3)**, clique com o botão direito em `dotnet` e selecione **Abrir no terminal Integrado (4)**.
 
    ![](../Media/aks-04.png)
 
-1. Execute o seguinte comando para iniciar sessão no **portal Azure**.
+1. Execute o seguinte comando para fazer login no **portal Azure**.
 
     ```
     az login
     ```
 
-1. Isto irá redirecionar para **página de login da Microsoft**, selecione a sua conta do Azure **<inject key="AzureAdUserEmail"></inject>** e navegue de volta para **código do Visual Studio**.
+1. Isso o redirecionará para a **página de login da Microsoft**, selecione a sua conta do Azure **<inject key="AzureAdUserEmail"></inject>** e navegue de volta para o **Visual Studio Code**.
 
    ![](../Media/azure-account-select.png)
 
-1. Execute o comando seguinte para iniciar sessão num **Azure Container Registry (ACR)** utilizando a CLI do Azure.
+1. Execute o seguinte comando para fazer login em um **Azure Container Registry (ACR)** usando o Azure CLI.
 
-    > **Nota**: Substitua **[ACRname]** **<inject key="AcrUsername" enableCopy="true"/>**.
+    > **Observação**: Substitua **[ACRname]** **<inject key="AcrUsername" enableCopy="true"/>**.
 
     ```
     az acr login -n [ACRname]
     ```
 
-    >**Nota**: O comando az acr login -n [ACRname] regista-o numa instância do Azure Contentor Registry (ACR). Autentica a sua sessão com o Registo de Contentores do Azure especificado, permitindo enviar e extrair imagens de contentores de e para o registo.
+    >**Observação**: O comando `az acr login -n [ACRname]` autentica sua sessão com o Azure Container Registry especificado, permitindo que você envie e baixe imagens de contêiner.
 
-1. Execute o seguinte comando para adicionar a etiqueta.
+1. Execute o seguinte comando para adicionar a tag.
 
-    > **Nota**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
+    > **Observação**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
 
     ```
     docker tag miyagi-recommendation:latest [ACRname]/miyagi-recommendation:latest
     ```
 
-    >**Nota**: o comando docker tag miyagi-recommendation:latest [ACRname]/miyagi-recommendation:latest marca uma imagem local do Docker com um novo nome que inclui o nome do Azure Container Registry (ACR). Ao marcar a imagem desta forma, prepara-a para ser enviada por push para o Registo de Contentores do Azure especificado.
+    >**Observação**: o comando `docker tag miyagi-recommendation:latest [ACRname]/miyagi-recommendation:latest` marca uma imagem local do Docker com um novo nome que inclui o nome do Azure Container Registry (ACR). Ao marcar a imagem desta forma, prepara-a para ser enviada por push para o Azure Container Registry especificado.
 
-1. Execute o seguinte comando para enviar a imagem para o registo do contentor.
+1. Execute o seguinte comando para enviar a imagem para o registro de contêiner.
 
-    > **Nota**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
+    > **Observação**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
 
     ```
     docker push [ACRname]/miyagi-recommendation:latest
@@ -221,45 +221,47 @@ Nesta tarefa, irá enviar imagens de recomendação miyagi para acr.
 
     ![](../Media/task2-6.png)
 
-    >**Nota**: O comando docker push [ACRname]/miyagi-recommendation:latest carrega a imagem do Docker especificada, que foi marcada com o nome do Azure Container Registry (ACR), para o ACR. Isto disponibiliza a imagem no ACR para implementação e utilização em vários serviços Azure.
+    >**Observação**: O comando `docker push [ACRname]/miyagi-recommendation:latest` carrega a imagem do Docker especificada para o Azure Container Registry. Isto disponibiliza a imagem no ACR para implementação e utilização em vários serviços Azure.
 
-1. Navegue de volta para a janela **Visual Studio Code** e navegue até **miyagi/ui/typescript** - clique com o botão direito do rato no menu em cascata e selecione **Abrir no terminal integrado**.
+1. Navegue de volta para o **Visual Studio Code**, vá para **miyagi/ui/typescript**, clique com o botão direito e selecione **Abrir no Terminal Integrado**.
 
-1. Execute o seguinte comando para adicionar a etiqueta.
+1. Execute o seguinte comando para adicionar a tag.
 
-    > **Nota**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
+    > **Observação**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
 
     ```
     docker tag miyagi-ui:latest [ACRname]/miyagi-ui:latest
     ```
 
-1. Execute o seguinte comando para enviar a imagem para o registo do contentor.
+1. Execute o seguinte comando para enviar a imagem para o registro de contêiner.
 
-    > **Nota**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
+    > **Observação**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
 
     ```
     docker push [ACRname]/miyagi-ui:latest
     ```
 
-### Tarefa 5: Implantar pods AKS
+### Tarefa 5: Implantar os Pods no AKS
 
-1. Navegue de volta para a janela de código do Visual Studio e navegue até **miyagi/deploy/infrastructure/kubernetes/manifests/50-miyagi** clique em **50-miyagi** no menu em cascata e seleccione **Abrir no Terminal integrado**.
+Nesta tarefa, você implantará os serviços da UI e de Recomendação do Miyagi nos pods do Azure Kubernetes Service (AKS). Isso envolve modificar os arquivos de manifesto do Kubernetes para incluir o nome do Azure Container Registry (ACR), aplicar as configurações e verificar a implantação dos pods.
+
+1. Navegue até **miyagi/deploy (1)/infrastructure (2)/kubernetes/manifests (3)/50-miyagi (4)** e selecione **Abrir no Terminal Integrado (5)**.
 
    ![](../Media/aks-01.png)
 
-1. Abra o ficheiro **miyagi-recommendation.yaml** e substitua o ficheiro &lt;ACR-NAME&gt; com **<inject key="acrUsername" enableCopy="true"/>** Nome do registo do contentor Azure e guarde o ficheiro por **Ctrl + S**.
+1. Abra o arquivo **miyagi-recommendation.yaml** e substitua o &lt;ACR-NAME&gt; pelo nome do registro de contêiner do Azure **<inject key="acrUsername" enableCopy="true"/>** e salve o arquivo com **Ctrl + S**.
 
    ![](../Media/miyagi-image47.png)
 
    ![](../Media/miyagi-image48.png)
 
-1. Abra o ficheiro **miyagi-ui.yaml** e substitua o ficheiro &lt;ACR-NAME&gt; com **<inject key="acrUsername" enableCopy="true"/>** Nome do registo do contentor Azure e guarde o ficheiro por **Ctrl + S**.
+1. Abra o arquivo **miyagi-ui.yaml** e substitua o &lt;ACR-NAME&gt; pelo nome do registro de contêiner do Azure **<inject key="acrUsername" enableCopy="true"/>** e salve o arquivo com **Ctrl + S**.
 
    ![](../Media/miyagi-image49.png)
 
    ![](../Media/miyagi-image50.png)
 
-1. Execute os seguintes comandos para implementar os pods de aplicações.
+1. Execute os seguintes comandos para implantar os pods da aplicação.
 
     ```
     kubectl apply -f ./miyagi-recommendation.yaml
@@ -268,9 +270,9 @@ Nesta tarefa, irá enviar imagens de recomendação miyagi para acr.
     kubectl apply -f ./miyagi-ui.yaml
     ```
 
-1. As aplicações devem agora ser implantadas. Para verificar, execute o comando abaixo e verá os dois pods em estado de execução.
+1. As aplicações devem agora estar implantadas. Para verificar, execute o comando abaixo e você deverá ver ambos os pods em estado de execução.
 
-    >**Nota**: Pode demorar alguns minutos até que a saída apareça, por isso aguarde alguns minutos antes de executar o comando.
+    >**Observação**: Pode levar alguns minutos para a saída aparecer, então aguarde um pouco antes de executar o comando.
 
     ```
     kubectl get pods
@@ -278,23 +280,29 @@ Nesta tarefa, irá enviar imagens de recomendação miyagi para acr.
 
     ![](../Media/AKS-running.png)
 
-
-    >**Parabéns** pela conclusão da tarefa! Agora é altura de validá-lo. Aqui estão os passos:
+    >**Parabéns** por concluir a tarefa! Agora, é hora de validá-la. Siga os passos:
     > - Clique no botão Validar para a tarefa correspondente. Se receber uma mensagem de sucesso, validou o laboratório com sucesso.
     > - Caso contrário, leia atentamente a mensagem de erro e tente novamente o passo, seguindo as instruções do guia do laboratório.
     > - Se precisar de ajuda, contacte-nos através do e-mail labs-support@spektrasystems.com.
 
  <validation step="f50c7e4e-0b5a-4ae2-bd9e-ff29a023f1d2" />
 
-# Laboratório 3.2: Explorar e verificar a UI Miyagi em contentor e o serviço de recomendação no AKS
+# Laboratório 3.2: Explorar e Verificar a UI e o Serviço de Recomendação do Miyagi Conteinerizados no AKS
 
-Neste laboratório, irá explorar a implementação e verificação da UI Miyagi e dos serviços de recomendação no Azure Kubernetes Service (AKS). As tarefas envolvem testar APIs e aceder à UI através de pontos finais do Ingress, garantindo a funcionalidade adequada no ambiente AKS.
+Neste laboratório, você explorará a implantação e a verificação dos serviços da UI e de Recomendação do Miyagi no Azure Kubernetes Service (AKS). As tarefas envolvem testar APIs e acessar a UI via endpoints de Ingress, garantindo a funcionalidade adequada dentro do ambiente AKS.
+
+## Objetivos do Laboratório
+
+Você será capaz de completar as seguintes tarefas:
+
+- Tarefa 1: Explorar o serviço de recomendação no AKS utilizando o Ingress Endpoint
+- Tarefa 2: Explorar o App Miyagi no AKS utilizando o Ingress Endpoint
 
 ### Tarefa 1: Explorar o serviço de recomendação no AKS utilizando o Ingress Endpoint
 
-1. Para testar a API, execute o comando abaixo para obter os endereços IP do serviço
+1. Para testar a API, execute o comando abaixo para obter os endereços IP do serviço.
 
-    >**Nota**: Pode demorar alguns minutos até que a saída apareça, por isso aguarde alguns minutos antes de executar o comando.
+    >**Observação**: Pode levar alguns minutos para a saída aparecer, então aguarde um pouco antes de executar o comando.
 
     ```
     kubectl get svc
@@ -302,13 +310,13 @@ Neste laboratório, irá explorar a implementação e verificação da UI Miyagi
 
     ![](../Media/miyagi-image129.png)
 
-1. Copie o endereço IP externo do **miyagi-recommendation-service** e introduza-o no browser. Agora deve ver o ponto final do swagger.
+1. Copie o endereço IP Externo do **miyagi-recommendation-service** e cole-o no navegador. Você deverá ver o endpoint do Swagger.
 
    ![](../Media/miyagi-image52.png)
 
-### Tarefa 2: Explore a aplicação Miyagi no AKS utilizando o Ingress Endpoint
+### Tarefa 2: Explorar o App Miyagi no AKS utilizando o Ingress Endpoint
 
-1. Para testar a UI, execute o comando abaixo para obter os endereços IP do serviço
+1. Para testar a UI, execute o comando abaixo para obter os endereços IP do serviço.
  
     ```
     kubectl get svc
@@ -316,12 +324,12 @@ Neste laboratório, irá explorar a implementação e verificação da UI Miyagi
 
     ![](../Media/miyagi-image128.png)
 
-1. Copie o endereço IP externo do **miyagi-ui** e introduza-o no browser. Agora deve ver a interface do Miyagi.
+1. Copie o endereço IP Externo do **miyagi-ui** e cole-o no navegador. Você deverá ver o frontend do Miyagi.
 
    ![](../Media/miyagi-image53.png)
 
 ### Resumo
 
-Neste laboratório, implementou o Azure Kubernetes Service (AKS) para a UI Miyagi e para o serviço de recomendação Miyagi. Tudo começou com a construção de imagens Docker para estes serviços, contendo todos os componentes necessários, como código e ficheiros de configuração. Após a criação da imagem, o passo seguinte envolveu o envio da imagem Docker do serviço de recomendação para um registo de contentor, uma plataforma de armazenamento e implementação para clusters Kubernetes. Por fim, foram implementados pods AKS, representando contentores em execução no cluster Kubernetes, tornando operacional a UI Miyagi e o serviço de recomendação
+Neste laboratório,  você implantou o Azure Kubernetes Service (AKS) tanto para a UI do Miyagi quanto para o serviço de Recomendação do Miyagi. Começou com a construção de imagens Docker para esses serviços, contendo todos os componentes necessários, como código e arquivos de configuração. Após a criação da imagem, o próximo passo envolveu o envio da imagem Docker do serviço de Recomendação para um Registro de Contêiner, uma plataforma de armazenamento e implantação para clusters Kubernetes. Finalmente, os pods do AKS foram implantados, representando contêineres em execução dentro do cluster Kubernetes, tornando assim a UI e o serviço de Recomendação do Miyagi operacionais.
 
-### Concluiu este laboratório com sucesso. Agora clique em Seguinte no canto inferior direito para passar para a página seguinte.
+### Você concluiu este laboratório com sucesso. Agora, clique em Avançar no canto inferior direito para ir para a próxima página.
