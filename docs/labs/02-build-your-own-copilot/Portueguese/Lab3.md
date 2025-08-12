@@ -1,4 +1,4 @@
-# Laboratório 4 – Expor o OpenAI por meio do Gerenciamento de API do Azure (APIM)
+# Laboratório 4 – Expor o OpenAI por meio do Serviço de Gerenciamento de API do Azure (APIM)
 
 ### Duração: 60 minutos
 
@@ -86,43 +86,43 @@ Neste laboratório, você configurará políticas de API, definirá funções e 
 
    ![](../Media/miyagi-image63.png)
 
-1. No Janela **Adicionar assinatura**, forneça **Nome** como **aoai-test** **(1)** e **Nome de visualização** como **AOAI Test** **(2)** e clique em **Criar** **(3)**.
+1. No Janela **Nova assinatura**, forneça **Nome** como **aoai-test** **(1)** e **Nome de exibição** como **AOAI Test** **(2)** e clique em **Criar** **(3)**.
 
    ![](../Media/miyagi-image64.png)
 
-1. Depois de a subscrição ser **Teste AOAI** criada, clique nos **três pontos** **(1)** junto ao **Teste AOAI** e clique em **Mostrar\ocultar chaves** **(2)**. Copie a chave **assinatura primária** **(3)** e guarde-a para mais tarde.
+1. Assim que a assinatura **Teste AOAI** for criada, clique nos **três pontos** **(1)** junto ao **Teste AOAI** e depois clique em **Mostrar\ocultar chaves** **(2)**. Copie a **Chave primária** **(3)** e guarde-a para mais tarde.
 
    ![](../Media/miyagi-image(65).png)
 
-1. Navegue até **Azure OpenAI** no Portal Azure, selecione **OpenAIService-<inject key="DeploymentID" enableCopy="false"/>**.
+1. Navegue até **Azure OpenAI** no Portal Azure, selecione o **OpenAIService-<inject key="DeploymentID" enableCopy="false"/>**.
 
-1. No ficheiro **OpenAIService-<inject key="DeploymentID" enableCopy="false"/>**, seleccione **Controlo de acesso (IAM)** **(1)**, clique em **+ Adicionar** **(2)** e selecione **Adicionar atribuição de função** **(3)**.
+1. Em **OpenAIService-<inject key="DeploymentID" enableCopy="false"/>**, selecione **IAM (Controle de acesso)** **(1)**, clique em **+ Adicionar** **(2)** e selecione **Adicionar atribuição de função** **(3)**.
 
    ![](../Media/miyagi-image66.png)
 
-1. No separador **Adicionar atribuição de função** da barra de pesquisa, pesquise e selecione **Utilizador de serviços cognitivos (1) (2)** e clique em **Seguinte (3)**.
+1. Na página **Adicionar atribuição de função**, pesquise e selecione **Usuário dos Serviços Cognitivos (1) (2)**, clique em **Próximo (3)**.
 
    ![](../Media/apinew3.png)
 
-1. No separador **Membros**, selecione **Identidade gerida** **(1)**, clique em **+ Selecionar membros** **(2)**.
+1. Na aba **Membros**, selecione **Identidade gerenciada** **(1)**, clique em **+ Selecionar membros** **(2)**.
 
    ![](../Media/miyagi-image82.png)
 
-1. No pop-up selecionar identidade gerida, para **Assinatura (1)** aceite o valor por defeito e **Identidade gerida** selecione **Serviço de gestão de API** **(2)**, escolha **miyagi -apim-<inject key="DeploymentID" enableCopy="false"/>** **(3)** e clique em **Select** **(4)**.
+1. Na janela à direita, **Selecionar as identidades gerenciadas** em **Assinatura (1)**, aceite o valor padrão. Em **Identidade gerenciada**, selecione **Serviço de Gerenciamento de API** **(2)**, escolha **miyagi -apim-<inject key="DeploymentID" enableCopy="false"/>** **(3)** e clique em **Selecionar** **(4)**.
 
    ![](../Media/miyagi-image(68).png)
 
-1. Clique em **Seguinte**.
+1. Clique em **Próximo**.
 
-1. No separador **Revisar + atribuir** clique em **Revisar + atribuir**.
+1. Na aba **Examinar + atribuir**, clique em **Examinar + atribuir**.
 
-1. Navegue de volta para **serviço de gestão de API** no Portal Azure, selecione o serviço **miyagi-apim-<inject key="DeploymentID" enableCopy="false"/>** API Management.
+1. Navegue de volta para o **serviço de Gerenciamento de API** no Portal Azure e selecione o **miyagi-apim-<inject key="DeploymentID" enableCopy="false"/>**.
 
-1. No **serviço de gestão de API**, selecione **APIs** **(1)**, selecione a **API de serviço OpenAI do Azure** **(2)** API criada no passo anterior, selecione **Todas as operações** **(3)** e clique em **Editor de código de política**</> **(4)** em **Processamento de entrada**.
+1. No **serviço de Gerenciamento de API**, selecione **APIs** **(1)**, clique na API **Azure OpenAI Service API** **(2)**, selecione **All operations** **(3)** e clique em **Policies**</> **(4)** em **Inbound processing**.
 
    ![](../Media/api-inbound.png)
 
-1. No editor de código, copie a política abaixo para substituir apenas as tags **inbound** **(1)**, substitua **&lt;&lt;Azure_OpenAI_Endpoint&gt;&gt;** por **<inject key=" OpenAIEndpoint " enableCopy="true"/>** **(2)** do gestor de API que copiou na Tarefa 1, Passo 4 e clique em **Guardar** **(3)**.
+1. No editor de código, copie a política abaixo para sobrescrever apenas as tags **inbound** **(1)**, substitua por **&lt;&lt;Azure_OpenAI_Endpoint&gt;&gt;** **<inject key=" OpenAIEndpoint " enableCopy="true"/>** **(2)** que você copiou na Tarefa 1, Passo 4 e clique em **Save** **(3)**.
 
       ```
       <inbound>
@@ -139,13 +139,13 @@ Neste laboratório, você configurará políticas de API, definirá funções e 
 
    ![](../Media/api-inbound1.png)
 
-    >**Nota**: Certifique-se de que cola os valores **OpenAIEndpoint** e elimina qualquer duplicação de **https://**.
+    >**Observação**: Por favor, certifique-se de colar os valores do **OpenAIEndpoint** e eliminar qualquer duplicação de **https://**.
 
-1. Em API Management, clique em **Test** **(1)**, selecione Cria uma **conclusão para a mensagem de chat** **(2)**, introduza o nome de implementação gpt-4 **<inject key="CompletionModel" enableCopy="true"/>** **(3)** no campo de implementação ID, introduza **2023-05-15** **(4)** na API campo versão.
+1. No Serviço de Gerenciamento de API, clique em **Test** **(1)**, selecione **Creates a completion for the chat message** **(2)**, introduza o nome de implementação gpt-4 **<inject key="CompletionModel" enableCopy="true"/>** **(3)** no campo de `deployment-id`, insira **2023-05-15** **(4)** em `api-version`.
 
    ![](../Media/new-api-test.png)
 
-1. Desça até à secção **Corpo do pedido** **(1)**, substitua o código existente pelo código abaixo e clique em **Submeter** **(2)**.
+1. Role para baixo até a seção **Request body (1)**, substitua o código existente pelo código abaixo e clique em **Send** **(2)**.
 
     ```
     {"model":"gpt-4","messages":[{"role":"user","content":"Hello! What does an API Management Service in Azure do?"}]}
@@ -153,7 +153,7 @@ Neste laboratório, você configurará políticas de API, definirá funções e 
 
    ![](../Media/new-api-body.png)
 
-1. Desça a resposta e verá uma resposta `200` e uma mensagem de retorno do seu serviço OpenAI.
+1. Role a resposta para baixo e você deverá ver uma resposta `200` e uma mensagem de volta do seu serviço OpenAI.
 
    ![](../Media/new-api-result.png)
 
