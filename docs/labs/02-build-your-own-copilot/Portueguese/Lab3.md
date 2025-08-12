@@ -11,8 +11,8 @@ Você será capaz de completar as seguintes tarefas:
 - Tarefa 1: Verificar o serviço de Gerenciamento de API implantado e criar uma API.
 - Tarefa 2: Criar Políticas e Funções no Gerenciamento de API.
 - Tarefa 3: Atualizar a Imagem Docker para o serviço de Recomendação.
-- Tarefa 4: Revisão do serviço de Recomendação a partir do AKS.
-- Tarefa 5: Configurar o Logging do Hub de Eventos e Validar a Entrada
+- Tarefa 4: Revisão do serviço de Recomendação no AKS.
+- Tarefa 5: Configurar logs no Hub de Eventos e validar os dados de entrada.
 
 ### Tarefa 1: Verificar o serviço de Gerenciamento de API implantado e criar uma API
 
@@ -157,63 +157,63 @@ Neste laboratório, você configurará políticas de API, definirá funções e 
 
    ![](../Media/new-api-result.png)
 
-### Tarefa 3: atualizar a imagem do Docker para o serviço de recomendação
+### Tarefa 3: Atualizar a Imagem Docker para o serviço de Recomendação
 
-Neste laboratório, irá atualizar a configuração do serviço de recomendação, reconstruir a imagem do Docker, enviá-la por push para o ACR e garantir que a imagem atualizada está pronta para implementação no ambiente Azure.
+Nesta tarefa, você atualizará a configuração do serviço de recomendação, reconstruirá a imagem Docker, a enviará para o ACR e garantirá que a imagem atualizada esteja pronta para implantação no ambiente Azure.
 
-1. Navegue até ao Visual Studio Code, expanda o diretório **miyagi/services/recommendation-service/dotnet** e selecione **appsettings.json**.
+1. Navegue até ao Visual Studio Code, expanda o diretório **miyagi/services (1)/recommendation-service (2)/dotnet (3)** e selecione o arquivo **appsettings.json (4)**.
 
    ![](../Media/open-appsettings.png)
 
-1. No ficheiro `appsettings. json`, deve substituir o valor **endpoint** de **endpoint de recurso OpenAI** por **API Gateway URL** que copiou na Tarefa 1, Passo 4, Valor **apiKey** com a **chave de assinatura** que foi copiada na Tarefa 2, Passo 9 e guarde o ficheiro.
+1. No arquivo `appsettings. json`, você deve substituir o valor de **endpoint** do **recurso OpenAI** pela **URL do Gateway de API** que você copiou na Tarefa 1, Passo 4, o valor **apiKey** pela **chave de assinatura** que foi copiada na Tarefa 2, Passo 9 e salve o arquivo.
 
    ![](../Media/miyagi-image(72).png)
 
-1. Navegue de volta para a janela **Visual Studio Code** e navegue até **miyagi/services/recommendation-service/dotnet** - clique com o botão direito do rato em dotnet no menu em cascata, seleccione **Abrir no terminal integrado**.
+1. Retorne para o **Visual Studio Code**, navegue até a pasta **miyagi/services (1)/recommendation-service (2)/dotnet (3)**, clique com o botão direito em `dotnet` e selecione **Abrir no terminal Integrado**.
 
    ![](../Media/aks-04.png)
 
-1. Agora, precisa de reconstruir a imagem do docker para o serviço de recomendação, executando o comando docker abaixo. Faça para atualizar o nome da imagem docker que foi criada anteriormente para o serviço de recomendação com o mesmo nome.
+1. Agora, você precisa reconstruir a imagem docker para o serviço de recomendação executando o comando docker abaixo. Certifique-se de usar o mesmo nome da imagem docker que foi criada anteriormente.
 
     ```
     docker build . -t miyagi-recommendation
     ```
 
-    >**Nota**: Este comando cria uma imagem Docker chamada recomendação Miyagi a partir do Dockerfile e dos ficheiros associados no directório actual.
+    >**Observação**: Este comando cria uma imagem Docker chamada Miyagi-recommendation a partir do Dockerfile e dos arquivos associados no diretório atual.
 
-1. Execute o seguinte comando para iniciar sessão no ACR.
+1. Execute o seguinte comando para fazer login no ACR.
 
-    > **Nota**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**, **[uname]** por **<inject key= " AcrUsername" enableCopy="true"/>** e **[password]** com **<inject key="AcrPassword" enableCopy="true"/>**.
+    > **Observação**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**, **[uname]** por **<inject key= " AcrUsername" enableCopy="true"/>** e **[password]** com **<inject key="AcrPassword" enableCopy="true"/>**.
 
     ```
     docker login [ACRname] -u [uname] -p [password]
     ```
 
-    >**Nota**: O comando docker login [ACRname] -u [uname] -p [password] é utilizado para autenticar o seu cliente Docker com o Azure Container Registry (ACR) especificado utilizando o nome de utilizador e a palavra-passe fornecidos. Esta autenticação é necessária para executar operações como o envio e receção de imagens de contentores de e para o ACR.
+    >**Observação**: O comando `docker login [ACRname] -u [uname] -p [password] é usado para autenticar seu cliente Docker com o Azure Container Registry (ACR) especificado, utilizando o nome de usuário e a senha fornecidos. Essa autenticação é necessária para executar operações como enviar (push) e baixar (pull) imagens de contêiner para e a partir do ACR.
 
-1. Execute o seguinte comando para adicionar a etiqueta.
+1. Execute o seguinte comando para adicionar a tag.
 
-    > **Nota**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
+    > **Observação**: Substitua **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
 
     ```
     docker tag miyagi-recommendation:latest [ACRname]/miyagi-recommendation:latest
     ```
 
-    >**Nota**: O comando docker push [ACRname]/miyagi-recommendation:latest carrega uma imagem do Docker da sua máquina local para o Azure Container Registry (ACR) especificado. Ao executar este comando, disponibiliza a imagem miyagi-recommendation:latest no ACR, permitindo que seja utilizada em diversas implementações e serviços no Azure.
+    >**Observação**: O comando `docker push [ACRname]/miyagi-recommendation:latest` envia uma imagem Docker da sua máquina local para o Azure Container Registry (ACR) especificado. Ao executar esse comando, você disponibiliza a imagem miyagi-recommendation:latest no ACR, permitindo que ela seja utilizada em diversos deployments e serviços dentro do Azure.
 
-1. Depois de fazer login no ACR. Execute o comando abaixo para enviar a imagem docker atualizada do serviço de recomendação para o registo do contentor.
+1. Depois de fazer login no ACR, execute o comando abaixo para enviar a imagem docker atualizada para o registro de contêiner.
 
-    >**Nota**: certifique-se de que substitui **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
+    >**Observação**: certifique-se de que substitui **[ACRname]** por **<inject key="AcrLoginServer" enableCopy="true"/>**.
 
     ```
     docker push [ACRname]/miyagi-recommendation:latest
     ```
 
-    >**Nota**: O comando docker push [ACRname]/miyagi-recommendation:latest carrega a imagem do Docker miyagi-recommendation:latest para o Azure Container Registry (ACR) especificado. Isto disponibiliza a imagem no ACR para utilização em implementações e outras operações.
+    >**Observação**: O comando `docker push [ACRname]/miyagi-recommendation:latest` envia a imagem Docker miyagi-recommendation:latest para o Azure Container Registry (ACR) especificado. Isso torna a imagem disponível no ACR para uso em implantações (deployments) e outras operações.
 
 ### Tarefa 4: Revisão do serviço de recomendação do AKS
 
-Neste laboratório, irá gerir o ciclo de vida de implementação do serviço de recomendação no Azure Kubernetes Service (AKS), incluindo o início e a paragem do serviço, bem como a verificação da sua funcionalidade após a revisão.
+Nesta tarefa, você gerenciará o ciclo de vida da implantação do serviço de recomendação no Azure Kubernetes Service (AKS), incluindo o início e a parada do serviço, bem como a verificação de sua funcionalidade após a revisão.
 
 1. Navegue até ao portal do Azure, abra o Grupo de Recursos denominado **miyagi-rg-<inject key="DeploymentID" enableCopy="false"/>** e seleccione **env-miyagi-<inject key=" DeploymentID" enableCopy="false"/>** Serviço Kubernetes da lista de recursos.
 
@@ -238,7 +238,7 @@ Neste laboratório, irá gerir o ciclo de vida de implementação do serviço de
 
    ![](../Media/miyagi-image77.png)
 
-### Tarefa 5: configurar o log do Event Hub e validar a entrada
+### Tarefa 5: Configurar logs no Hub de Eventos e validar os dados de entrada
 
 Neste laboratório, irá configurar o registo do Event Hub para a gestão de API, configurar os componentes necessários no Azure, implementar a configuração de registo utilizando um modelo Bicep e validar a integração através de testes e monitorização.
 
