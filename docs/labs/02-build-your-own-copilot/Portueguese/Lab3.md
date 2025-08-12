@@ -1,12 +1,22 @@
-# Laboratório 4 – Expor a IA aberta através do APIM
+# Laboratório 4 – Expor o OpenAI por meio do Gerenciamento de API do Azure (APIM)
 
-### Duração: 80 minutos
+### Duração: 60 minutos
 
-Neste laboratório, irá aprofundar a configuração e verificação de APIs no Azure API Management, com foco na integração do serviço Azure OpenAI. Isto envolve configurar APIs HTTP, garantir a configuração correta e obter um URL de gateway para acesso e integração externos perfeitos. Explorará também a criação de políticas, definições de funções e gestão de assinaturas para operar as APIs em segurança. Este laboratório destaca as melhores práticas de gestão de API, garantindo a autenticação, autorização e testes operacionais robustos no ecossistema Azure abrangente.
+Neste laboratório, você se aprofundará na configuração e verificação de APIs no Gerenciamento de API do Azure (APIM), com foco na integração do serviço Azure OpenAI. Isso envolve a configuração de APIs HTTP, a garantia da configuração correta e a obtenção de uma URL de gateway para acesso externo e integração perfeitos. Você também explorará a criação de políticas, a definição de funções (roles) e o gerenciamento de assinaturas para operar as APIs de forma segura. Este laboratório destaca as melhores práticas em gerenciamento de API, garantindo autenticação, autorização e testes operacionais robustos dentro do ecossistema abrangente do Azure.
 
-### Tarefa 1: verificar o serviço de gestão de API implementado e criar uma API
+## Objetivos do Laboratório
 
-Neste laboratório, irá configurar uma API HTTP no Azure API Management para interagir com o serviço Azure OpenAI. Garante que a API está configurada corretamente e fornece um URL de gateway para acesso externo e integração com outros serviços.
+Você será capaz de completar as seguintes tarefas:
+
+- Tarefa 1: Verificar o serviço de Gerenciamento de API implantado e criar uma API.
+- Tarefa 2: Criar Políticas e Funções no Gerenciamento de API.
+- Tarefa 3: Atualizar a Imagem Docker para o serviço de Recomendação.
+- Tarefa 4: Revisão do serviço de Recomendação a partir do AKS.
+- Tarefa 5: Configurar o Logging do Hub de Eventos e Validar a Entrada
+
+### Tarefa 1: Verificar o serviço de Gerenciamento de API implantado e criar uma API
+
+Nesta tarefa, você configurará uma API HTTP dentro do Gerenciamento de API do Azure para interagir com o serviço Azure OpenAI. Isso garante que a API esteja configurada corretamente e fornece uma URL de gateway para acesso externo e integração com outros serviços.
 
 1. Navegue até ao portal do Azure, abra o **Grupo de Recursos** denominado **miyagi-rg-<inject key="DeploymentID" enableCopy="false"/>** e seleccione **miyagi-apim-<inject key="DeploymentID" enableCopy="false"/>** Serviço de gestão de API da lista de recursos.
 
