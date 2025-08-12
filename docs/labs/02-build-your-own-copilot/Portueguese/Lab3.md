@@ -215,22 +215,21 @@ Nesta tarefa, você atualizará a configuração do serviço de recomendação, 
 
 Nesta tarefa, você gerenciará o ciclo de vida da implantação do serviço de recomendação no Azure Kubernetes Service (AKS), incluindo o início e a parada do serviço, bem como a verificação de sua funcionalidade após a revisão.
 
-1. Navegue até ao portal do Azure, abra o Grupo de Recursos denominado **miyagi-rg-<inject key="DeploymentID" enableCopy="false"/>** e seleccione **env-miyagi-<inject key=" DeploymentID" enableCopy="false"/>** Serviço Kubernetes da lista de recursos.
+1. Navegue até o portal do Azure, abra o Grupo de Recursos **miyagi-rg-<inject key="DeploymentID" enableCopy="false"/>** e selecione  o serviço Kubernetes **env-miyagi-<inject key=" DeploymentID" enableCopy="false"/>**.
 
    ![](../Media/miyagi-image73.png)
 
-
-1. No separador Visão geral **env-miyagi-<inject key="DeploymentID" enableCopy="false"/>** painel de serviço Kubernetes, clique no botão **Parar**.
+1. Na aba Visão geral do serviço Kubernetes **env-miyagi-<inject key="DeploymentID" enableCopy="false"/>**, clique no botão **Parar** e depois em **Sim**.
 
    ![](../Media/miyagi-image74.png)
 
-    > **Nota**: aguarde até que o serviço Kubernetes seja completamente interrompido.
+    > **Observação**: Aguarde até que o serviço Kubernetes seja completamente parado.
 
-1. No separador Visão geral **env-miyagi-<inject key="DeploymentID" enableCopy="false"/>** painel de serviço Kubernetes, clique no botão **Iniciar**.
+1. Na aba Visão geral, **env-miyagi-<inject key="DeploymentID" enableCopy="false"/>** no painel de serviço Kubernetes, clique no botão **Iniciar**.
 
    ![](../Media/miyagi-image75.png)
 
-1. Assim que o serviço Kubernetes for iniciado, selecione **Serviços e entradas** em **Recursos Kubernetes** e clique em **IP de extensão** do serviço de recomendação miyagi.
+1. Assim que o serviço Kubernetes for iniciado, selecione **Serviços e regras de entradas** em **Recursos do Kubernetes** e clique em **IP externo** do serviço de recomendação miyagi.
 
    ![](../Media/miyagi-image76.png)
 
@@ -240,40 +239,39 @@ Nesta tarefa, você gerenciará o ciclo de vida da implantação do serviço de 
 
 ### Tarefa 5: Configurar logs no Hub de Eventos e validar os dados de entrada
 
-Neste laboratório, irá configurar o registo do Event Hub para a gestão de API, configurar os componentes necessários no Azure, implementar a configuração de registo utilizando um modelo Bicep e validar a integração através de testes e monitorização.
+Nesta tarefa, você configurará o logging do Hub de Eventos para o Gerenciamento de API, configurando os componentes necessários no Azure, implantando a configuração de logging usando um template Bicep e validando a integração através de testes e monitoramento.
 
-1. Na pesquisa do portal Azure e selecione **Event Hubs**, selecione **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**.
+1. No portal do Azure, pesquise e selecione **Hubs de Eventos**, e selecione **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**.
 
    ![](../Media/miyagi-image78.png)
 
-1. No separador **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>** Event hub Namespace, no menu esquerdo selecione **Controlo de acesso (IAM)** **(1)** , clique em **+ Adicionar** **(2)** e selecione **Adicionar atribuição de função** **(3)**.
+1. No Namespace do Hub de Eventos **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo selecione **IAM (Controle de acesso)** **(1)** , clique em **+ Adicionar** **(2)** e selecione **Adicionar atribuição de função** **(3)**.
 
    ![](../Media/miyagi-image79.png)
 
-1. No separador **Role** do separador Adicionar atribuição de função na barra de pesquisa, pesquise e selecione **Azure Event Hubs Data Sender (1)(2)** e clique em **Next (3)**.
+1. Na página **Adicionar atribuição de função**, pesquise e selecione **Remetente de Dados dos Hubs de Eventos do Azure (1) (2)**, clique em **Próximo (3)**.
 
    ![](../Media/miyagi-image80.png)
 
-1. No separador **Membros**, selecione **Identidade gerida** **(1)**, clique em **+ Selecionar membros** **(2)**.
+1. Na aba **Membros**, selecione **Identidade gerenciada** **(1)**, clique em **+ Selecionar membros** **(2)**.
 
    ![](../Media/miyagi-image82.png)
 
-1. No pop-up de seleção de identidade gerida para **Assinatura Aceite o padrão (1)** no menu pendente Identidade gerida, selecione **Serviço de gestão de API** **(2)**, selecione **miyagi-apim-<inject key="DeploymentID" enableCopy="false"/>** **(3)** e clique em **Select** **(4)**.
+1. Na janela à direita, **Selecionar as identidades gerenciadas** em **Assinatura (1)**, aceite o valor padrão. Em **Identidade gerenciada**, selecione **Serviço de Gerenciamento de API** **(2)**, escolha **miyagi -apim-<inject key="DeploymentID" enableCopy="false"/>** **(3)** e clique em **Selecionar** **(4)**.
 
    ![](../Media/miyagi-image(68).png)
 
-1. Clique em **Seguinte**.
+1. Clique em **Próximo**.
 
-1. No separador **Revisar + atribuir** clique em **Revisar + atribuir**.
+1. Na aba **Examinar + atribuir**, clique em **Examinar + atribuir**.
 
-   ![](../Media/namespace3.png)
-
-1. No ficheiro **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo seleccione **Event Hubs** **(1)** em **Entity** e clique em **miyagi-event-<inject key="DeploymentID" enableCopy="false"/> (2)**
+1. No **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo, selecione **Hubs de Eventos** **(1)** em **Entidades** e clique em **miyagi-event-<inject key="DeploymentID" enableCopy="false"/> (2)**
 
    ![](../Media/miyagi-image86.png)
 
-1. Na **Instância de Hubs de Eventos** de **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo selecione **Políticas de acesso partilhado** **(1)** em **Settings**, clique em **apimLoggerAccessPolicy** **(2)** e copie **Connection string–primary key** **(3)** cole-o num bloco de notas.
+1. Na **Instância do Hubs de Eventos** de **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo selecione **Políticas de acesso partilhado** **(1)** em **Configurações**, clique em **apimLoggerAccessPolicy** **(2)** e copie a chave da**Cadeia de conexão primária** **(3)** cole-o num bloco de notas.
 
+>>> Continuar aqui.
    ![](../Media/miyagi-image87.png)
 
 1. Abra o **notepad** do jumpvm e copie e cole o código abaixo, actualize **&lt;&lt;API_MANAGEMENT_NAME&gt;&gt;** com **miyagi-apim-<inject key="DeploymentID" enableCopy= "false "/>** nome e o &lt;&lt;EVENT_HUB_CONNECTION_STRING&gt;&gt; copiado da etapa acima.
