@@ -1,28 +1,37 @@
-# Laboratório 3.1: Contentorização da UI Miyagi e do serviço de recomendação para o Azure Kubernetes Service (AKS)
+# Laboratório 3.1: Containerização da interface Miyagi e do serviço de recomendações no Azure Kubernetes Service (AKS)
 
-### Duração: 80 minutos
+### Duração Estimada: 60 minutos
 
-Neste laboratório, irá contentorizar e implementar a UI Miyagi e os serviços de recomendação no Azure Kubernetes Service (AKS). Começará por configurar o Kubernetes e construir imagens Docker para ambos os serviços. O processo envolve o envio destas imagens para o Azure Container Registry (ACR) e depois a sua implementação num cluster AKS. Isto garante que os serviços estão perfeitamente integrados e operacionais num ambiente escalável e em contentores e aplicam configurações do Kubernetes, atualizando os endereços IP de serviço e verificando a implementação acedendo aos serviços através dos seus respetivos endpoints.
+Neste laboratório, você irá conteinerizar e implantar a UI e os serviços de recomendação do Miyagi no Azure Kubernetes Service (AKS). Você começará configurando o Kubernetes e construindo imagens Docker para ambos os serviços. O processo envolve o envio (push) dessas imagens para o Azure Container Registry (ACR) e, em seguida, a implantação delas em um cluster AKS. Isso garante que os serviços sejam integrados e operacionais de forma fluida em um ambiente conteinerizado e escalável, aplicando configurações do Kubernetes, atualizando os endereços IP dos serviços e verificando a implantação acessando os serviços através de seus respectivos endpoints.
 
-### Tarefa 1: Implementar serviços AKS
+## Objetivos do Laboratório
+Você será capaz de completar as seguintes tarefas:
 
-Nesta tarefa, irá implementar a recomendação Miyagi e os serviços UI num cluster do Azure Kubernetes Service (AKS). Isto envolve fazer login no portal do Azure, aplicar as definições do Kubernetes e atualizar os ficheiros de configuração com os endereços IP externos dos serviços.
+- Tarefa 1: Implantar os Serviços no AKS.
+- Tarefa 2: Criar uma Imagem Docker para a UI do Miyagi.
+- Tarefa 3: Criar Imagens Docker para o serviço de Recomendação.
+- Tarefa 4: Enviar a Imagem Docker do serviço de Recomendação para o Registro de Contêiner.
+- Tarefa 5: Implantar os Pods no AKS.
 
-1. Navegue de volta para a janela de código do Visual Studio e navegue até **miyagi/deploy/infrastructure/kubernetes/manifests/50-miyagi**, clique com o botão direito do rato em **50-miyagi** no menu em cascata e seleccione **Abrir no Terminal integrado**.
+### Tarefa 1: Implantar os Serviços no AKS
+
+Nesta tarefa, você implantará os serviços de recomendação e da UI do Miyagi em um cluster do Azure Kubernetes Service (AKS). Isso envolve fazer login no portal do Azure, aplicar as configurações do Kubernetes e atualizar os arquivos de configuração com os endereços IP externos dos serviços.
+
+1. Navegue de volta para a janela de código do Visual Studio e vá para **miyagi/deploy (1)/infrastructure (2)/kubernetes/manifests (3)/50-miyagi (4)**, clique com o botão direito em **50-miyagi** e, no menu, selecione **Abrir no Terminal Integrado (5)**.
 
    ![](../Media/aks-01.png)
 
-1. Execute o seguinte comando para iniciar sessão no portal Azure.
+1. Execute o seguinte comando para fazer login no portal do Azure.
 
-    > **Nota**: substitua [ClusterName] por **<inject key="aksname" enableCopy="true"/>** e [ResourceGroupName] por **<inject key="rgname" enableCopy="true"/>**
+    > **Observação**: substitua [ClusterName] por **<inject key="aksname" enableCopy="true"/>** e [ResourceGroupName] por **<inject key="rgname" enableCopy="true"/>**
 
     ```
     az aks get-credentials -n [ClusterName] -g [ResourceGroupName]
     ```
 
-    > **Importante** : O comando az aks get-credentials -n [ClusterName] -g [ResourceGroupName] é utilizado na interface de linha de comandos (CLI) do Azure para recuperar e fundir os ficheiros de configuração do Kubernetes para um serviço Cluster Azure Kubernetes especificado ( AKS) no ficheiro kubeconfig local.
+    > **Observação** : O comando `az aks get-credentials -n [ClusterName] -g [ResourceGroupName]` é usado na interface de linha de comando (CLI) do Azure para recuperar e mesclar os arquivos de configuração do Kubernetes de um cluster AKS especificado no arquivo kubeconfig local.
 
-1. Assim que o comando estiver concluído, deverá ter acesso ao cluster e poderá executar os seguintes comandos para implementar os serviços de aplicação.
+1. Após o comando ser concluído, você deverá ter acesso ao cluster e poderá executar os seguintes comandos para implantar os serviços da aplicação.
 
     ```
     kubectl apply -f ./miyagi-recommendation-service.yaml
@@ -31,9 +40,9 @@ Nesta tarefa, irá implementar a recomendação Miyagi e os serviços UI num clu
     kubectl apply -f ./miyagi-ui-service.yaml
     ```
 
-    >**Nota**: Após a execução bem-sucedida dos comandos acima. O Kubernetes irá ler o ficheiro YAML e aplicar as suas definições ao cluster. Criará miyagi-recommendation-service e miyagi-ui
+    >**Observação**: Após a execução bem-sucedida dos comandos acima, o Kubernetes lerá o arquivo YAML e aplicará suas configurações ao cluster. Ele criará os serviços `miyagi-recommendation-service` e `miyagi-ui`.
 
-1. Depois de os serviços estarem implementados, execute o comando abaixo e acompanhe os **IPs externos** do serviço. Pode demorar alguns minutos até que os **ips externos** apareçam, por isso aguarde alguns minutos antes de executar o comando.
+1. Assim que os serviços forem implantados, execute o comando abaixo e acompanhe os **IPs externos do serviço**. Pode levar alguns minutos para que os **IPs externos** apareçam, então aguarde um pouco antes de executar o comando.
 
     ```
     kubectl get svc
@@ -41,50 +50,52 @@ Nesta tarefa, irá implementar a recomendação Miyagi e os serviços UI num clu
 
     ![](../Media/external-ip.png)
 
-1. De seguida, navegue até **miyagi/services/recommendation-service/dotnet** e abra o ficheiro **appsettings.json**.
+1. De seguida, navegue até a pasta **miyagi** e expanda **services (1)/recommendation-service (2)/dotnet (3)** e abra o arquivo **appsettings.json (4)**.
 
    ![](../Media/aks-02.png)
 
-1. Copie o endereço IP externo **miyagi-ui** da consola e cole-o na secção **CorsAllowedOrigins** formatada como um endpoint **http://** e guarde o ficheiro por **Ctrl+S**.
+1. Copie o endereço IP externo **miyagi-ui** do console, cole-o na seção **CorsAllowedOrigins** formatado como um endpoint **http://** e salve o arquivo com **Ctrl+S**.
 
    ![](../Media/ui-cors.png)
 
-1. De seguida, navegue até **miyagi/ui/typescript** e abra o ficheiro **. env**.
+1. Depois, navegue até **miyagi/ui/typescript (1)** e abra o arquivo **. env (2)**.
 
    ![](../Media/aks-03.png)
 
-1. Copie o endereço IP externo **miyagi-recommendation-service** da consola e cole-o no valor **NEXT_PUBLIC_RECCOMMENDATION_SERVICE_URL** e guarde o ficheiro por **Ctrl + S**.
+1. Copie o endereço IP externo **miyagi-recommendation-service** do console, cole-o no valor de  **NEXT_PUBLIC_RECCOMMENDATION_SERVICE_URL** e salve o arquivo com **Ctrl + S**.
 
    ![](../Media/miyagi-ui-env.png)
 
-### Tarefa 2: Construir uma imagem Docker para a UI Miyagi
-Nesta tarefa, irá criar e executar o contentor Miyagi UI Docker localmente. Comece por abrir o Docker Desktop e concluir a configuração inicial. De seguida, utilize o Visual Studio Code para criar a imagem Docker para a UI Miyagi. Depois de a imagem ser criada, verifique-a e execute-a no Docker. Configure a porta do host e aceda à aplicação localmente através do URL fornecido.
+### Tarefa 2: Criar uma Imagem Docker para a UI do Miyagi
+Nesta tarefa, você construirá e executará o contêiner Docker da UI do Miyagi localmente. Comece abrindo o Docker Desktop e completando a configuração inicial. Em seguida, use o Visual Studio Code para construir a imagem Docker para a UI do Miyagi. Assim que a imagem for criada, verifique-a e execute-a no Docker. Configure a porta do host e acesse a aplicação localmente através da URL fornecida.
 
-1. Abra a aplicação **Docker** na área de trabalho do Lab VM clicando duas vezes.
+1. Navegue até a aplicação Docker Desktop na barra de tarefas. Se não estiver aberta, você pode abri-la clicando duas vezes no aplicativo **Docker** na área de trabalho da VM do Laboratório.
 
    ![](../Media/docker1.png)
 
-1. Na janela **Contrato de serviço de subscrição Docker**, clique em **Aceitar**.
+1. Se a janela **Docker Subscription Service Agreement**, clique em **Accept**.
 
    ![](../Media/docker2.png)
 
-1. Na janela **Bem-vindo ao Docker Desktop**, clique em **Continuar sem iniciar sessão**.
+1. Na janela **Welcome to Docker Desktop**, clique em **Continue without signing in**.
 
    ![](../Media/without-signin.png)
 
-1. Na janela **Conte-nos o trabalho que realiza**, clique em **Saltar**.
+1. Na janela **Sign in**, clique em **Skip**.
 
-1. Navegue de volta para a janela **Visual Studio Code** e navegue até **miyagi/ui/typescript** - clique com o botão direito do rato no menu em cascata e selecione **Abrir no terminal integrado**.
+    ![](./Media/sign-01.png)
+
+1. Navegue de volta para a janela **Visual Studio Code** e em **miyagi/ui/typescript**, clique com o botão direito e, no menu, selecione **Abrir no Terminal Integrado**.
 
     ```
     docker build . -t miyagi-ui
     ```
 
-    > **Nota**: Aguarde, pois este comando pode demorar algum tempo a ser concluído.
+    > **Observação**: Por favor, aguarde, pois este comando pode levar algum tempo para ser concluído.
 
-    > **Nota**: este comando lê as instruções do Dockerfile, processa-as para criar uma imagem Docker com base nessas instruções e, em seguida, marca a imagem resultante com o nome miyagi-ui.
+    > **Observação**: Este comando lê as instruções do Dockerfile, processa-as para criar uma imagem Docker e, em seguida, atribui a tag `miyagi-ui` à imagem resultante.
 
-1. Execute o seguinte comando para obter a imagem recém-criada.
+1. Execute o seguinte comando para ver a imagem recém-criada.
 
     ```
     docker images
@@ -92,15 +103,15 @@ Nesta tarefa, irá criar e executar o contentor Miyagi UI Docker localmente. Com
 
     ![](../Media/miyagi-image32.png)
 
-1. Navegue de volta para **Docker desktop**, no painel esquerdo selecione **Images**.
+1. Navegue de volta para **Docker desktop** e, no painel esquerdo, selecione **Images**.
 
    ![](../Media/miyagi-image33.png)
 
-1. Na folha **Images**, repare que a imagem **miyagi-ui (1)** é criada, selecione o ícone **executar (2)** .
+1. No painel **Images**, observe que a imagem **miyagi-ui (1)** foi criada, selecione o ícone **Run (2)** .
 
    ![](../Media/miyagi-image34.png)
 
-1. Na janela **Executar um novo contentor** selecione a seta pendente.
+1. Na janela **Run a new container**, selecione na seta suspensa.
 
    ![](../Media/miyagi-image43.png)
 
@@ -108,29 +119,29 @@ Nesta tarefa, irá criar e executar o contentor Miyagi UI Docker localmente. Com
 
    ![](../Media/miyagi-image35.png)
 
-1. Clique no link **3000:3000** URL
+1. Clique no link da URL: **3000:3000**.
 
    ![](../Media/miyagi-image36.png)
 
-1. Deverá conseguir ver a aplicação em execução localmente
+1. Você deverá ver a aplicação rodando localmente.
 
    ![](../Media/miyagi-image37.png)
 
-### Tarefa 3: Criar imagens Docker para o serviço de recomendação
+### Tarefa 3: Criar Imagens Docker para o serviço de Recomendação
 
-1. Navegue de volta para a janela **Visual Studio Code** e navegue até **miyagi/services/recommendation-service/dotnet** - clique com o botão direito do rato em dotnet no menu em cascata, seleccione **Abrir no terminal integrado**.
+1. Navegue de volta para o **Visual Studio Code**, vá para a pasta **miyagi** e expanda **services (1)/recommendation-service (2)/dotnet (3)**, clique com o botão direito em `dotnet` e selecione **Abrir no terminal Integrado (4)**.
 
    ![](../Media/aks-04.png)
 
-1. Execute o seguinte comando para construir uma **imagem Docker**
+1. Execute o seguinte comando para construir uma **imagem Docker**.
 
     ```
     docker build . -t miyagi-recommendation
     ```
 
-    > **Nota**: Aguarde, pois este comando pode demorar algum tempo a ser concluído.
+    > **Observação**: Por favor, aguarde, pois este comando pode levar algum tempo para ser concluído.
 
-1. Execute o seguinte comando para obter a imagem recém-criada.
+1. Execute o seguinte comando para ver a **imagem Docker** recém-criada.
 
     ```
     docker images
@@ -138,27 +149,27 @@ Nesta tarefa, irá criar e executar o contentor Miyagi UI Docker localmente. Com
 
     ![](../Media/miyagi-image40.png)
 
-1. Navegue de volta para **Docker desktop**, no painel esquerdo selecione **Images**.
+1. Navegue de volta para o **Docker desktop** e, no painel esquerdo, selecione **Images**.
 
    ![](../Media/miyagi-image33.png)
 
-1. Na folha **Images**, repare que a imagem **miyagi-recommendation (1)** está criada, selecione **run (2)** icon .
+1. No painel **Images**, observe que a imagem **miyagi-recommendation (1)** foi criada, clique no ícone **Run (2)**.
 
    ![](../Media/miyagi-image41.png)
 
-1. Na janela **Executar um novo contentor** selecione a seta pendente.
+1. Na janela **Run a new container**, clique na seta suspensa.
 
    ![](../Media/miyagi-image42.png)
 
-1. Em **Executar um novo contentor**, em **Portas** para **Host Port** introduza **5224 (1)** e clique em **Run (2)**.
+1. Em **Run a new container**, em **Ports**, para **Host Port**, insira **5224 (1)** e clique em **Run (2)**.
 
    ![](../Media/miyagi-image44.png)
 
-1. Clique no link URL **5224:8080**.
+1. Clique no link da URL **5224:8080**.
 
    ![](../Media/miyagi-image45.png)
 
-1. Deverá conseguir ver a aplicação em execução localmente.
+1. Você deverá ver a aplicação rodando localmente.
 
    ![](../Media/miyagi-image46.png)
 
