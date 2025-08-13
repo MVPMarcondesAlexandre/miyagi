@@ -274,7 +274,7 @@ Nesta tarefa, você configurará o logging do Hub de Eventos para o Gerenciament
 >>> Continuar aqui.
    ![](../Media/miyagi-image87.png)
 
-1. Abra o **notepad** do jumpvm e copie e cole o código abaixo, actualize **&lt;&lt;API_MANAGEMENT_NAME&gt;&gt;** com **miyagi-apim-<inject key="DeploymentID" enableCopy= "false "/>** nome e o &lt;&lt;EVENT_HUB_CONNECTION_STRING&gt;&gt; copiado da etapa acima.
+1. Abra o **notepad** do jumpvm e copie e cole o código abaixo, atualize **&lt;&lt;API_MANAGEMENT_NAME&gt;&gt;** com o nome **miyagi-apim-<inject key="DeploymentID" enableCopy= "false "/>**  e o &lt;&lt;EVENT_HUB_CONNECTION_STRING&gt;&gt; copiado da etapa acima.
 
    ```
    resource existingApiManagement 'Microsoft.ApiManagement/service@2023-03-01-preview' existing = {
@@ -297,9 +297,9 @@ Nesta tarefa, você configurará o logging do Hub de Eventos para o Gerenciament
 
    ![](../Media/miyagi-image121.png)
 
-1. Na barra de menu do bloco de notas selecione **Ficheiros** e clique em **Guardar como**.
+1. Na barra de menu do bloco de notas selecione **Arquivos** e clique em **Salvar como**.
 
-1. Em **Guardar como** navegue até ao caminho `C:\LabFiles\miyagi` **(1)**, introduza o nome do ficheiro **aoai-logger.bicep** **(2)** , guarde como tipo em **Todos os ficheiros** **(3)** e clique em **Guardar** **(4)**.
+1. Em **Salvar como**, navegue até ao caminho `C:\LabFiles\miyagi` **(1)**, introduza o nome do arquivo **aoai-logger.bicep** **(2)** , mude o tipo para **Todos os arquivos** **(3)** e clique em **Salvar** **(4)**.
 
    ![](../Media/bicepfile2.png)
 
@@ -309,30 +309,30 @@ Nesta tarefa, você configurará o logging do Hub de Eventos para o Gerenciament
     az login
     ```
 
-1. Isto irá redirecionar para **página de login da Microsoft**, selecione a sua conta do Azure **<inject key="AzureAdUserEmail"></inject>** e navegue de volta para o **PowerShell**.
+1. Isso o redirecionará para a **página de login da Microsoft**. Selecione a sua conta do Azure **<inject key="AzureAdUserEmail"></inject>** e retorne para o **PowerShell**.
 
    ![](../Media/azure-account-select.png)
 
-1. Execute o seguinte comando para alterar o diretório para a pasta raiz `miyagi` no terminal e execute o ficheiro bíceps.
+1. Execute o seguinte comando para mudar o diretório para a pasta raiz do `miyagi` no terminal e execute o arquivo bíceps.
 
-    > **Nota**: Substitua &lt;&lt;RESOURCE_GROUP_NAME&gt;&gt; com **<inject key="rgname" enableCopy="true"/>**.
+    > **Observação**: Substitua &lt;&lt;RESOURCE_GROUP_NAME&gt;&gt; com **<inject key="rgname" enableCopy="true"/>**.
 
     ```
     cd C:\LabFiles\miyagi
     az deployment group create --resource-group <<RESOURCE_GROUP_NAME>> --template-file .\aoai-logger.bicep
     ```
 
-    >**Nota**: Esta sequência de comando navega para o diretório C:\LabFiles\miyagi que contém o ficheiro Bicep e, em seguida, implementa os recursos definidos nesse ficheiro no grupo de recursos do Azure especificado.
+    >**Observação**: Esta sequência de comando navega para o diretório C:\LabFiles\miyagi que contém o arquivo Bicep e, em seguida, implementa os recursos definidos nesse arquivo no grupo de recursos do Azure especificado.
 
-1. Navegue até ao portal do Azure, abra o Grupo de Recursos denominado **miyagi-rg-<inject key="DeploymentID" enableCopy="false"/>** e seleccione **miyagi-apim-<inject key=" DeploymentID" enableCopy ="false"/>** Serviço de gestão de API da lista de recursos.
+1. Navegue até o portal do Azure, abra o Grupo de Recursos **miyagi-rg-<inject key="DeploymentID" enableCopy="false"/>** e selecione o serviço de Gerenciamento de API **miyagi-apim-<inject key=" DeploymentID" enableCopy ="false"/>**.
 
    ![](../Media/lab3-t1-s1.png)
 
-1. No serviço **miyagi-apim-<inject key="DeploymentID" enableCopy="false"/>** API Management do menu esquerdo, clique em **APIs** **(1)** e seleccione a **Azure OpenAI Service API** **(2)** criada no passo anterior, selecione **Todas as operações** **(3)** e em **processamento de saída** clique em **código de política editor(4)**.
+1. No serviço de Gerenciamento de API **miyagi-apim-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo, clique em **APIs** **(1)** e selecione em **Azure OpenAI Service API** **(2)**, selecione **All Operations** **(3)** e em **outbound proccessing** clique em **Policies(4)** para edição.
 
    ![](../Media/api-outbound.png)
 
-1. No editor de código, copie a política abaixo para substituir apenas as tags **outbound** e clique em **Guardar**.
+1. No editor de código,  copie a política abaixo para sobrescrever apenas as tags **outbound** e clique em **Salvar**.
 
       ```
       <outbound>
@@ -352,7 +352,7 @@ Nesta tarefa, você configurará o logging do Hub de Eventos para o Gerenciament
       ```
 
    ![](../Media/miyagi-image88.png)
-
+--CONTINUA AQUI
 1. De seguida, abra a **IU Miyagi** num separador separado do browser, clique em **Personalizar** e selecione o seu **Consultor Financeiro Favorito (1)** e escolha **GPT-4 (2)** para **Mecanismo de raciocínio** no menu suspenso e clique em **Personalizar (3)**. repita o mesmo passo selecionando diferentes **Consultores financeiros favoritos** 6 a 7 vezes para gerar registos adicionais.
 
    ![](../Media/miyagi-image126.png)
