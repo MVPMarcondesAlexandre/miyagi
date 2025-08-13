@@ -352,29 +352,29 @@ Nesta tarefa, você configurará o logging do Hub de Eventos para o Gerenciament
       ```
 
    ![](../Media/miyagi-image88.png)
---CONTINUA AQUI
-1. De seguida, abra a **IU Miyagi** num separador separado do browser, clique em **Personalizar** e selecione o seu **Consultor Financeiro Favorito (1)** e escolha **GPT-4 (2)** para **Mecanismo de raciocínio** no menu suspenso e clique em **Personalizar (3)**. repita o mesmo passo selecionando diferentes **Consultores financeiros favoritos** 6 a 7 vezes para gerar registos adicionais.
+
+1. Em seguida, abra a **IU Miyagi** em uma aba separada, clique em **Personalize** e selecione o seu **Favorite Financial Advisor (1)** e escolha **GPT-4 (2)** para o **Mecanismo de raciocínio** no menu suspenso e clique em **Personalize (3)**. Repita o mesmo passo, selecionando diferentes **Consultores financeiros favoritos** 6 a 7 vezes para gerar registos logs adicionais.
 
    ![](../Media/miyagi-image126.png)
 
-1. Navegue de volta para o Event Hub, selecione **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>** Event Hubs.
+1. Volte para o Hub de Eventos e selecione o **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**.
 
    ![](../Media/api-product9.png)
 
-1. No **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>** Event Hub Namespace, no menu esquerdo selecione **Event Hubs** **(1)** em **Entidade** e clique em **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**
+1. No Namespace do Hub de Eventos **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo, selecione **Hubs de Eventos** **(1)** em **Entidade** e clique em **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**.
 
    ![](../Media/miyagi-image89.png)
 
-1. No **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>** Instância de hubs de eventos, no menu esquerdo selecione **Process data** **(1)**, desça até encontrar **Process your Event Hub data using Stream Analytics Query Language** e clique em **Iniciar** **(2)**.
+1.  Na Instância do Hub de Eventos, **miyagi-event-<inject key="DeploymentID" enableCopy="false"/>**, no menu esquerdo, selecione **Processar dados** **(1)**, role para baixo até encontrar **Processe seus dados do Hub de Eventos usando a linguagem de Consulta do Stream Analytics** e clique em **Iniciar** **(2)**.
 
    ![](../Media/miyagi-image90.png)
 
-1. Clique em **Consulta de Teste** e na consulta do Event Hub, deverá ver informações de registo para os tokens utilizados.
+1. Clique em **Consulta teste** e, na consulta do Hub de Eventos, você deverá ver as informações de log dos tokens utilizados.
 
    ![](../Media/miyagi-image91.png)
 
 ### Resumo
 
-Neste laboratório, configurou um serviço de gestão de APIs para gerir APIs de forma eficiente. Inicialmente, o serviço foi implementado e foi criada uma API dentro do mesmo. Posteriormente, foram estabelecidas regras e funções para controlar o acesso à API. O registo do Event Hub foi configurado para monitorizar a utilização da API de forma eficaz. Por último, foi realizada a validação de entrada para garantir que a API tratava corretamente as várias entradas. No geral, este processo garantiu a gestão, a segurança e a monitorização de desempenho eficazes das APIs, contribuindo para um ecossistema de APIs bem organizado e seguro.
+Neste laboratório, você configurou um serviço de Gerenciamento de API para gerenciar APIs de forma eficiente. Inicialmente, o serviço foi implantado e uma API foi criada dentro dele. Subsequentemente, regras e funções foram estabelecidas para controlar o acesso à API. O logging do Hub de Eventos foi configurado para monitorar o uso da API de forma eficaz. Por último, a validação de entrada foi realizada para garantir que a API lidasse corretamente com várias entradas. No geral, este processo garantiu o gerenciamento eficaz, a segurança e o monitoramento do desempenho das APIs, contribuindo para um ecossistema de API bem organizado e seguro.
 
-### Concluiu este laboratório com sucesso. Agora clique em Seguinte no canto inferior direito para passar para a página seguinte.
+### Você concluiu este laboratório com sucesso. Agora, clique em Avançar no canto inferior direito para ir para a próxima página.
